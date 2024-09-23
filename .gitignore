@@ -1,0 +1,24 @@
+# Ignorar el entorno virtual (ajusta según la ubicación exacta)
+envinfo/
+
+# Archivos compilados de Python
+__pycache__/
+*.py[cod]
+
+# Archivos de configuración local y bases de datos
+*.sqlite3
+*.db
+
+# Archivos de logs
+*.log
+
+# Archivos sensibles (variables de entorno)
+.env
+.env.*
+
+# Archivos de migraciones de Django (opcional)
+*/migrations/
+
+# Otros archivos específicos de tu entorno que no deben ser subidos
+*.pyc
+*.pyo

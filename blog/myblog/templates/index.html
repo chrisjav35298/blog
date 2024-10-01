@@ -32,7 +32,7 @@
                         {{ categoria.nombre }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </p>
-                <a href="{url ''}" > Ver detalle</a>
+                <a href="{% url 'post_detalle' post.id %}">Ver detalle</a>
             </div>
         </div>
         {% empty %}

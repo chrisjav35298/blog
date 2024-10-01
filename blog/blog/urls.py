@@ -34,12 +34,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from myblog.views import lista_posts, index
+from myblog.views import lista_posts, index, post_detalle
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', lista_posts, name='lista_posts'),
     path('', index, name='index'),
+    path('detalle/<int:id>/', post_detalle, name='post_detalle'),
+
 ]
 
 if settings.DEBUG:  # Esto asegura que solo se sirvan archivos de medios en modo desarrollo

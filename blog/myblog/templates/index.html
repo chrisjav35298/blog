@@ -4,17 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posts</title>
+    <title>INDEX</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-   
 
 </head>
 <body>
-    <h1>TODOS  LOS POSTS    </h1>
+    <h1>Últimos POST</h1>
   
     <div class="container">
-        {% for post in posts %}
+        {% for post in ultimosPosts %}
         <div class="card">
             {% if post.imagen %}
                 <img src="{{ post.imagen.url }}" alt="Post Image">
@@ -33,13 +32,15 @@
                         {{ categoria.nombre }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </p>
+                <a href="{% url 'post_detalle' post.id %}">Ver detalle</a>
             </div>
         </div>
         {% empty %}
         <p class="no-posts">No posts available.</p>
         {% endfor %}
     </div>
-    <script src="{% static 'js/app.js' %}"></script>
 
-</body>
+
+    <script src="{% static 'js/app.js' %}"></script>
+   </body>
 </html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Detalle</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Post Detalle</h1>
+  
+    <div class="container">
+        <div class="card">
+            {% if Post.imagen %}
+                <img src="{{ Post.imagen.url }}" alt="Post Image">
+            {% else %}
+                <img src="https://via.placeholder.com/300x200?text=No+Image" alt="Placeholder Image">
+            {% endif %}
+            <div class="card-body">
+                <h2 class="card-title">{{ Post.titulo }}</h2>
+                <p class="card-summary">{{ Post.resumen }}</p>
+                <p class="card-content">{{ Post.contenido }}</p>
+                <p class="card-author">Creado: {{ Post.autor.username }}</p>
+                <p class="card-date">Publicado: {{ Post.fecha_publicacion }}</p>
+                <p class="card-categories">
+                    Categorías: 
+                    {% for categoria in Post.categorias.all %}
+                        {{ categoria.nombre }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        
+        <h2>Comentarios</h2>
+        <div class="comments-section">
+            {% for comentario in comentarios %}
+                <div class="comment">
+                    <p><strong>{{ comentario.autor }}</strong> dijo:</p>
+                    <p>{{ comentario.contenido }}</p>
+                </div>
+            {% empty %}
+                <p class="no-comments">No hay comentarios para este post.</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
 }
@@ -13,7 +13,7 @@ h1 {
     justify-content: center;
     gap: 20px;
     padding: 20px;
-}
+} */
 .card {
     background-color: #fff;
     border-radius: 10px;

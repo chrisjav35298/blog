@@ -35,12 +35,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from myblog.views import lista_posts, index, post_detalle
+from contacto import views as contacto_views 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', lista_posts, name='lista_posts'),
     path('', index, name='index'),
     path('detalle/<int:id>/', post_detalle, name='post_detalle'),
+    path('contacto/', contacto_views.contacto, name='contacto'),
+    path('contacto/exito/', contacto_views.contacto_exito, name='contacto_exito'),
 
 ]
 

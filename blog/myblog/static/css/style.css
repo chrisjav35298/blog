@@ -69,3 +69,46 @@ h1 {
     font-size: 1.2em;
     color: #666;
 }
+
+
+header.masthead {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-top: calc(8rem + 57px);
+    padding-bottom: 8rem;
+    background: no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed; /* Fija la imagen */
+    background-color: #6c757d; /* Color de fondo de reserva */
+}
+
+header.masthead:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #212529;
+    opacity: 0.5; /* Añade una capa oscura sobre la imagen */
+}
+
+@media (min-width: 992px) {
+    header.masthead {
+        padding-top: 12.5rem;
+        padding-bottom: 12.5rem;
+    }
+}
+.h16 {
+    font-size: 3rem;
+  }
+
+
+.site-heading .subheading {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.1;
+    display: block;
+    margin-top: 0.725rem;
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }

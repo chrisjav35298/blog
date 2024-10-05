@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Post
 from .models import Comentario
 from django.utils import timezone
+from django.http import Http404
 # from django.http import HttpResponse
 
 

@@ -22,3 +22,7 @@ __pycache__/
 # Otros archivos específicos de tu entorno que no deben ser subidos
 *.pyc
 *.pyo
+
+media/
+
+/settings/base.py

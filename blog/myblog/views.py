@@ -1,23 +1,20 @@
 from django.shortcuts import render
 from .models import Post
 from .models import Comentario
+from .models import Categoria
 from django.utils import timezone
 from django.http import Http404
+
 # from django.http import HttpResponse
 
 
 
-# def home_view(request):
-#     context = {'mensaje': 'INFORMATORIO ' }
-#     return HttpResponse(f" hola {context['mensaje']}")
-# # Create your views here.
-
-# def index(request):
-#     return render(request, 'inicio.html')
-
 def index(request):
     ultimosPosts = Post.objects.all().order_by('fecha_publicacion').reverse()[:3]
-    return render(request, 'index.html',{'ultimosPosts':ultimosPosts})
+    categorias_con_post = Categoria.obtener_categorias_ordenadas_por_numero_de_posts()
+    return render(request, 'index.html', {
+        'ultimosPosts': ultimosPosts,
+        'postPorCategoria': categorias_con_post})
 
 def lista_posts(request):
     posts = Post.objects.all().order_by('fecha_publicacion')

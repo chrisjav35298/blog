@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.db.models import Count
 
 # Create your models here.
 
@@ -27,8 +28,16 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    @classmethod
+    def obtener_categorias_ordenadas_por_numero_de_posts(cls):
+        return cls.objects.annotate(num_posts=Count('posts')).order_by('-num_posts')
+    
+    @classmethod
+    def obtener_posts_ordenados_por_categorias(cls):
+        return Post.objects.select_related('categorias').order_by('categorias__nombre')
 
-
+    
 class Comentario(models.Model):
     cuerpo_comentario = models.TextField()
     fecha_creado = models.DateTimeField(default=timezone.now)  # Remove ()

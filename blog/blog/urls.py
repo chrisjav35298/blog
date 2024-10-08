@@ -36,6 +36,7 @@ from django.contrib import admin
 from django.urls import path
 from myblog.views import lista_posts, index, post_detalle
 from contacto import views as contacto_views 
+from usuario.views import RegistrarUsuario, LoginUsuario, LogoutUsuario
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -44,8 +45,11 @@ urlpatterns = [
     path('detalle/<int:id>/', post_detalle, name='post_detalle'),
     path('contacto/', contacto_views.contacto, name='contacto'),
     path('contacto/exito/', contacto_views.contacto_exito, name='contacto_exito'),
+    path('registro/', RegistrarUsuario.as_view(), name='registrar'),
+    path('login/', LoginUsuario.as_view(), name='login'),
+    path('logout/', LogoutUsuario.as_view(), name='logout'),
 
 ]
 
-if settings.DEBUG:  # Esto asegura que solo se sirvan archivos de medios en modo desarrollo
+if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

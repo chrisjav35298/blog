@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<h2>Formulario de inicio de sesión</h2>
+<form class="form-horizontal" method="post">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label for="username" class="form-label">Nombre de usuario o Email</label>
+        {{ form.username }} 
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        {{ form.password }}  
+    </div>
+
+    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+</form>
+
+<a style="color:black;" href="{% url 'registrar' %}">¿Aún no tienes una cuenta? Regístrate aquí</a>
+  
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+

@@ -1,0 +1,72 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block title %}Registro de usuario{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<h2>Registrarse</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    
+    <div>
+        <label for="{{ form.username.id_for_label }}">Username:</label>
+        {{ form.username }} 
+        {{ form.username.errors }}
+    </div>
+    
+    <div>
+        <label for="{{ form.first_name.id_for_label }}">First name:</label>
+        {{ form.first_name }} 
+        {{ form.first_name.errors }}
+    </div>
+    
+    <div>
+        <label for="{{ form.last_name.id_for_label }}">Last name:</label>
+        {{ form.last_name }} 
+        {{ form.last_name.errors }}
+    </div>
+    
+    <div>
+        <label for="{{ form.password1.id_for_label }}">Password:</label>
+        {{ form.password1 }} 
+        {{ form.password1.errors }}
+    </div>
+    
+    <div>
+        <label for="{{ form.password2.id_for_label }}">Password confirmation:</label>
+        {{ form.password2 }} 
+        {{ form.password2.errors }}
+    </div>
+    
+    <div>
+        <label for="{{ form.email.id_for_label }}">Email address:</label>
+        {{ form.email }} 
+        {{ form.email.errors }}
+    </div>
+    
+    <div>
+        <label for="{{ form.imagen.id_for_label }}">Imagen:</label>
+        {{ form.imagen }} 
+        {{ form.imagen.errors }}
+    </div>
+    
+    <div>
+        <label>Authentication using password:</label>
+        <input type="radio" id="enabled" name="password_auth" value="enabled" checked> 
+        <label for="enabled">Enabled</label>
+        <input type="radio" id="disabled" name="password_auth" value="disabled"> 
+        <label for="disabled">Disabled</label>
+    </div>
+    
+    <button type="submit">Registrarse</button>
+</form>
+
+<p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a>.</p>
+
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

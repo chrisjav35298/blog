@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<h2>Lista de Categorías</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre de la Categoría</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for categoria in categorias %}
+        <tr>
+            <td>{{ categoria.id }}</td>
+            <td>{{ categoria.nombre }}</td>
+            <td>
+               
+                <a href="{% url 'categoria_edit' categoria.id %}" class="btn btn-primary btn-sm">Editar</a>
+                <a href="{% url 'categoria_delete' categoria.id %}" class="btn btn-danger btn-sm" 
+                   onclick="return confirm('¿Estás seguro de eliminar esta categoría?');">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No hay categorías disponibles</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'categoria_new' %}" class="btn btn-success">Crear Nueva Categoría</a>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -34,9 +34,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from myblog.views import lista_posts, index, post_detalle
+from myblog.views import lista_posts, index, post_detalle, categoria,lista_categorias,editar_categoria,eliminar_categoria
 from contacto import views as contacto_views 
 from usuario.views import RegistrarUsuario, LoginUsuario, LogoutUsuario
+from django.urls import path
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -48,6 +51,10 @@ urlpatterns = [
     path('registro/', RegistrarUsuario.as_view(), name='registrar'),
     path('login/', LoginUsuario.as_view(), name='login'),
     path('logout/', LogoutUsuario.as_view(), name='logout'),
+    path('categoria/', categoria, name='categoria_new'),
+    path('categorias/', lista_categorias, name='categoria_list'),
+    path('categoria/editar/<int:id>/', editar_categoria, name='categoria_edit'),
+    path('categoria/eliminar/<int:id>/', eliminar_categoria, name='categoria_delete'),
 
 ]
 

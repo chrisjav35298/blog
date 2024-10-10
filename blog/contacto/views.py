@@ -5,7 +5,7 @@ def contacto(request):
     if request.method == 'POST':
         form = ContactoForm(request.POST)
         if form.is_valid():
-            form.save()  # Esto guarda los datos en la base de datos
+            form.save()  
             return redirect('contacto_exito')
     else:
         form = ContactoForm()

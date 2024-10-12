@@ -33,16 +33,27 @@
                     <a class="nav-link" href="{% url 'lista_posts' %}">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="{% url 'contacto' %}">About</a>
+                </li>
+                <li class="nav-item dropdown" id="administrar">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Administrar
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'categoria_new' %}">Contacto</a></li>
+                        <li><a class="dropdown-item" href="{% url 'categoria_new' %}">Otra Opción</a></li>
+                        <li><a class="dropdown-item" href="{% url 'categoria_new' %}">Más Opciones</a></li>
+                    </ul>
                 </li>
 
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <span class="navbar-text">Bienvenido, {{ user.username }}!</span>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
-                    </li>
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link btn btn-link" style="padding: 0;">Cerrar sesión</button>
+                    </form>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
@@ -75,7 +86,7 @@
     </header>
 {% endblock %}
 
-{% block container %}
+{% block main %}
 
     <!-- Main content with sidebar -->
     <div class="container mt-5">
@@ -88,29 +99,9 @@
 
             <!-- Sidebar Section -->
             <div class="col-md-4">
+                
                 {% block sidebar %}
-                <!-- <div class="p-3 mb-3 ">
-                    <h4 class="fst-italic">Sobre nosotros</h4>
-                    <p class="mb-0">Este blog fue creado por el Grupo 11, del informatorio.</p>
-                </div>
 
-                <div class="p-3">
-                    <h4 class="fst-italic">Categorías</h4>
-                    <ol class="list-unstyled mb-0">
-                        <li><a href="#">Ciberseguridad</a></li>
-                        <li><a href="#">Protección de datos</a></li>
-                        <li><a href="#">Hackeo ético</a></li>
-                    </ol>
-                </div>
-
-                <div class="p-3">
-                    <h4 class="fst-italic">Artículos recientes</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Cómo proteger tu red Wi-Fi</a></li>
-                        <li><a href="#">Guía de antivirus 2024</a></li>
-                        <li><a href="#">Consejos para contraseñas seguras</a></li>
-                    </ul>
-                </div> -->
                 {% endblock %}
             </div>
             

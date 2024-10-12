@@ -41,7 +41,7 @@ class Categoria(models.Model):
 class Comentario(models.Model):
     cuerpo_comentario = models.TextField()
     fecha_creado = models.DateTimeField(default=timezone.now)  
-    aprobado = models.BooleanField(default=False)
+    aprobado = models.BooleanField(default=True)
     post = models.ForeignKey('Post', related_name='comentarios', on_delete=models.CASCADE)
     autor_comentario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 

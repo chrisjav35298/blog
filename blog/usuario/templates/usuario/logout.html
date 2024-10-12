@@ -7,11 +7,13 @@
 {% block content %}
 <center>
     <div>
-        {% form message in messages %}
-            <table{% if message.tags %} clss="{{message.tags}}" {% endif %}>{{message}}</table>
+        {% for message in messages %}
+            <table{% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</table>
         {% endfor %}
     </div>
 </center>
+<h1>Has cerrado sesión</h1>
+<a href="{% url 'login' %}">Iniciar sesión de nuevo</a>
 {% endblock %}
 {% block sidebar %}
 {% endblock %}

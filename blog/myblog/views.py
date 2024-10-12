@@ -6,9 +6,10 @@ from django.utils import timezone
 from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from .form import CategoriaForm
+from .forms import CategoriaForm
 from django.http import HttpResponseForbidden
-
+from .forms import ComentarioForm 
+from django.contrib import messages
 
 
 
@@ -27,15 +28,26 @@ def lista_posts(request):
     return render(request, 'posts.html',{'posts':posts})
 
 def post_detalle(request, id):
-    try:
-        data = Post.objects.get(id=id)  
-        comentarios = Comentario.objects.filter(aprobado=True)
-    except Post.DoesNotExist:
-        raise Http404('El post no se encuentra.')
+    post = get_object_or_404(Post, id=id)
+    comentarios = post.comentarios.filter(aprobado=True)
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)  # Instanciar el formulario con los datos POST
+
+        if form.is_valid():  # Validar el formulario
+            comentario = form.save(commit=False)  # No guardar aún
+            comentario.post = post  # Asignar el post
+            comentario.autor_comentario = request.user  # Asignar el usuario actual
+            comentario.save()  # Ahora guardar el comentario
+            return redirect('post_detalle', id=post.id)
+
+    else:
+        form = ComentarioForm()  # Crear un formulario vacío en caso de un GET
 
     context = {
-        "Post": data,
-        "comentarios": comentarios
+        "Post": post,
+        "comentarios": comentarios,
+        "form": form,  # Pasar el formulario al contexto
     }
 
     return render(request, 'show.html', context)
@@ -81,3 +93,26 @@ def eliminar_categoria(request, id):
         return redirect('categoria_list')
     
     return render(request, 'categoria_delete.html', {'categoria': categoria})
+
+
+def almacenar_comentario(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.post = post  # Asigna el post al comentario
+            comentario.autor_comentario = request.user  # Asigna el usuario actual
+            comentario.save()  # Guarda el comentario
+            messages.success(request, 'Tu comentario ha sido enviado con éxito.')
+            return redirect('post_detalle', id=post.id)
+    else:
+        form = ComentarioForm()  # Crea un formulario vacío para GET
+
+    context = {
+        'form': form,
+        'post': post,
+        
+    }
+    return render(request, 'comentario_form.html', context)

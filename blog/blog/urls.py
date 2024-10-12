@@ -41,11 +41,13 @@ from django.urls import path
 
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', lista_posts, name='lista_posts'),
     path('', index, name='index'),
     path('detalle/<int:id>/', post_detalle, name='post_detalle'),
+   
     path('contacto/', contacto_views.contacto, name='contacto'),
     path('contacto/exito/', contacto_views.contacto_exito, name='contacto_exito'),
     path('registro/', RegistrarUsuario.as_view(), name='registrar'),

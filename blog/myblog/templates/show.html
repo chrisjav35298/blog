@@ -52,18 +52,26 @@
         <div>
             {% for comentario in comentarios %}
                 <div>
-                    <p><strong>{{ comentario.autor }}</strong> dijo:</p>
-                    <blockquote>{{ comentario.contenido }}</blockquote>
-                    <p><small>Publicado el {{ comentario.fecha }}</small></p>
+                    <p><strong>{{ comentario.autor_comentario  }}</strong> dijo:</p>
+                    <blockquote>{{ comentario.cuerpo_comentario }}</blockquote>
+                    <p><small>Publicado el {{ comentario.fecha_creado |date:"d F - Y"  }}</small></p>
                 </div>
             {% empty %}
                 <p >No hay comentarios para este post.</p>
             {% endfor %}
         </div>
-        {% endblock %}
 
-     
- 
+        {% if user.is_authenticated %}
+            <h3>Deja un comentario:</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}  <!-- Esto renderiza el formulario -->
+                <button type="submit"  class="btn btn-primary">Enviar</button>
+            </form>
+        {% else %}
+            <p>Debes <a href="{% url 'login' %}">iniciar sesión</a> para comentar.</p>
+        {% endif %}
+        {% endblock %}
     
     <script src="{% static 'js/app.js' %}"></script>
 </body>

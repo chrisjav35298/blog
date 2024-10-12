@@ -1,57 +1,131 @@
+<!-- <!DOCTYPE html>
+{% extends 'base.html' %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDEX</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-{% extends 'base.html'%}
+</head>
+<body>
 
+
+    {% block footer %}
+
+    {% endblock %}
+    
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - Blog</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
 
 {% block header%}
-
-{% endblock %}
-
-{% block content %}
-<h2>Formulario de Contacto</h2>
-<form class="form-horizontal" method="post">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre</label>
-        {{ form.nombre }}
-    </div>
-
-    <div class="mb-3">
-        <label for="email" class="form-label">Email address</label>
-        {{ form.email }}
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    
-    <div class="mb-3">
-        <label for="mensaje" class="form-label">Mensaje:</label>
-        {{ form.mensaje }}
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-  
-{% endblock %}
-{% block sidebar %}
+    <header class="bg-primary text-white text-center py-5">
+        <div class="container">
+            <h1 class="display-4">Sobre Nosotros</h1>
+            <p class="lead">Conoce más acerca de nuestro blog y el equipo que lo hace posible.</p>
+        </div>
+    </header>
 {% endblock %}
 
 
+{% block main %}
+
+<!-- About Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-center">¿Quiénes Somos?</h2>
+                <p class="text-muted text-center">Nuestro blog está dedicado a compartir conocimientos y experiencias sobre <strong>tecnología, desarrollo web, y programación</strong>.</p>
+                <p>
+                    Fundado en 2024, nuestro blog ha crecido gracias a la pasión de un pequeño equipo de entusiastas de la tecnología. Aquí encontrarás artículos sobre las últimas tendencias en desarrollo web, tutoriales, y mucho más. Nuestro objetivo es inspirar a otros a aprender, crecer y desarrollar habilidades en el mundo de la tecnología.
+                </p>
+                <p>
+                    Estamos comprometidos con la calidad de nuestros contenidos y con la creación de una comunidad activa y participativa. Si tienes ideas o preguntas, no dudes en ponerte en contacto con nosotros.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Team Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center">Nuestro Equipo</h2>
+        <div class="row text-center">
+            <div class="col-lg-4">
+                <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" alt="Foto de equipo 1">
+                <h5>Juan Pérez</h5>
+                <p class="text-muted">Fundador y Editor en Jefe</p>
+            </div>
+            <div class="col-lg-4">
+                <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" alt="Foto de equipo 2">
+                <h5>María López</h5>
+                <p class="text-muted">Desarrolladora Web</p>
+            </div>
+            <div class="col-lg-4">
+                <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" alt="Foto de equipo 3">
+                <h5>Carlos Gómez</h5>
+                <p class="text-muted">Redactor y Editor</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center">Formulario de contacto</h2>
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <form class="form-horizontal" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        {{ form.nombre }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        {{ form.email }}
+                        <div id="emailHelp" class="form-text">Nunca compartiremos tu correo con nadie más.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="mensaje" class="form-label">Mensaje:</label>
+                        {{ form.mensaje }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- Bootstrap JS -->
+<script src="{% static 'js/app.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

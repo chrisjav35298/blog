@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block main %}
+{% block content %}
+{% endblock %}
+<div class="container mt-5">
+    <h2>Perfil de {{ user.username }}</h2>
+    <div>
+        <img src="{{ user.imagen.url }}" alt="Imagen de Perfil" style="max-width: 150px; max-height: 150px;">
+    </div>
+    <p><strong>Nombre de usuario:</strong> {{ user.username }}</p>
+    <p><strong>Nombre completo:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <p><strong>Correo electrónico:</strong> {{ user.email }}</p>
+    <a href="{% url 'usuario_edit' %}" class="btn btn-secondary">Editar Perfil</a>
+</div>
+{% endblock %}

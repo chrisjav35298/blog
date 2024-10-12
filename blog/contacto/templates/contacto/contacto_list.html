@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block header%}
+
+{% endblock %}
+
+{% block main %}
+
+{% block content %}
+{% endblock %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center">Mensajes de Contacto Recibidos</h2>
+        
+        {% if mensajes %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Mensaje</th>
+                            <th>Fecha de Envío</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mensaje in mensajes %}
+                        <tr>
+                            <td>{{ mensaje.nombre }}</td>
+                            <td>{{ mensaje.email }}</td>
+                            <td>{{ mensaje.mensaje }}</td>
+                            <td>{{ mensaje.fecha_envio|date:"d M Y H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-center">No se han recibido mensajes de contacto.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+

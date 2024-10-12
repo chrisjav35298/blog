@@ -17,7 +17,7 @@ def es_admin(user):
     return user.is_superuser
 
 def index(request):
-    ultimosPosts = Post.objects.all().order_by('fecha_publicacion').reverse()[:3]
+    ultimosPosts = Post.objects.all().order_by('fecha_publicacion').reverse()[:4]
     categorias_con_post = Categoria.obtener_categorias_ordenadas_por_numero_de_posts()
     return render(request, 'index.html', {
         'ultimosPosts': ultimosPosts,
@@ -26,6 +26,20 @@ def index(request):
 def lista_posts(request):
     posts = Post.objects.all().order_by('fecha_publicacion')
     return render(request, 'posts.html',{'posts':posts})
+
+
+
+# hay que usar para paginar
+# def lista_posts(request):
+#     posts = Post.objects.all()  # Obtén todos los posts
+#     paginator = Paginator(posts, 5)  # Muestra 5 posts por página
+
+#     page_number = request.GET.get('page')  # Obtén el número de página de la URL
+#     page_obj = paginator.get_page(page_number)  # Obtén el objeto de la página actual
+
+#     return render(request, 'mi_template.html', {'page_obj': page_obj})
+
+
 
 def post_detalle(request, id):
     post = get_object_or_404(Post, id=id)

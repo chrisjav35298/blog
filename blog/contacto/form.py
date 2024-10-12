@@ -1,7 +1,7 @@
 from django import forms
-from .models import MensajeContacto  # Importa el modelo
+from .models import MensajeContacto  
 
-class ContactoForm(forms.ModelForm):  # Cambia a ModelForm
+class ContactoForm(forms.ModelForm):  
     class Meta:
-        model = MensajeContacto  # Especifica el modelo
-        fields = ['nombre', 'email', 'mensaje']  # Campos que quieres incluir
+        model = MensajeContacto  
+        fields = ['nombre', 'email', 'mensaje']  

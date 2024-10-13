@@ -1,6 +1,7 @@
 from django import forms
 from .models import Categoria
 from .models import Comentario
+from .models import Post
 
 
 
@@ -17,4 +18,13 @@ class ComentarioForm(forms.ModelForm):
         fields = ['cuerpo_comentario']  
         widgets = {
             'cuerpo_comentario': forms.Textarea(attrs={'placeholder': 'Escribe tu comentario aquí...', 'required': True}),
+        }
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = [ 'titulo', 'resumen', 'contenido', 'imagen', 'categorias']
+        widgets = {
+            'categorias': forms.CheckboxSelectMultiple(),
         }

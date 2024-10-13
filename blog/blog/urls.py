@@ -29,6 +29,9 @@ from myblog.views import (
     lista_categorias,
     editar_categoria,
     eliminar_categoria,
+    crear_post,
+    editar_post,
+    eliminar_post
 )
 
 from contacto import views as contacto_views
@@ -43,10 +46,14 @@ from usuario.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Rutas para publicaciones
-    path('posts/', lista_posts, name='lista_posts'),
+    # Rutas para publicaciones y crud post
+    
     path('', index, name='index'),
     path('detalle/<int:id>/', post_detalle, name='post_detalle'),
+    path('post/', crear_post, name='post_new'),
+    path('posts/', lista_posts, name='post_list'),
+    path('post/<int:id>/editar/', editar_post, name='post_edit'),
+    path('post/<int:id>/eliminar/', eliminar_post, name='post_delete'),
 
     # Rutas para contacto
     path('contacto/', contacto_views.contacto, name='contacto'),

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+{% block content %}
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Resumen</th>
+            <th>Fecha de Publicación</th>
+            <th>Categoría</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in posts %}
+        <tr>
+            <td>{{ post.id }}</td>
+            <td>{{ post.titulo }}</td>
+            <td>{{ post.resumen }}</td>
+            <td>{{ post.fecha_publicacion }}</td>
+            <td>
+                {% for categoria in post.categorias.all %}
+                    {{ categoria.nombre }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No hay categorías
+                {% endfor %}
+            </td>
+            <td>
+                <a href="{% url 'post_edit' post.id %}" class="btn btn-warning">Editar</a>
+                <form action="{% url 'post_delete' post.id %}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro de eliminar este post?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No hay posts disponibles</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'post_new' %}" class="btn btn-success">Crear nuevo post</a>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

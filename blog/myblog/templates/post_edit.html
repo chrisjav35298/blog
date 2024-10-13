@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<h2>Editar Post: {{ form.instance.titulo }}</h2>
+
+<form method="post" class="form-horizontal">
+    {% csrf_token %}
+    <div class="mb-3">
+        {{ form.non_field_errors }}
+
+        <div class="form-group">
+            <label for="id_titulo">Título:</label>
+            {{ form.titulo }}
+            {{ form.titulo.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_resumen">Resumen:</label>
+            {{ form.resumen }}
+            {{ form.resumen.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_contenido">Contenido:</label>
+            {{ form.contenido }}
+            {{ form.contenido.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_imagen">Imagen:</label>
+            {{ form.imagen }}
+            {{ form.imagen.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_categorias">Categorías:</label>
+            {{ form.categorias }}
+            {{ form.categorias.errors }}
+        </div>
+
+        <!-- <div class="form-group">
+            <label for="id_fecha_publicacion">Fecha de Publicación:</label>
+            <input type="date" name="fecha_publicacion" id="id_fecha_publicacion" value="{{ form.instance.fecha_publicacion|date:'Y-m-d' }}" class="form-control">
+        </div> -->
+        <div class="form-group">
+            <label>
+                <input type="checkbox" name="publicar" id="id_publicar" value="true"> Publicar ahora
+            </label>
+        </div>
+
+        {% if form.instance.fecha_publicacion %}
+        <div class="form-group">
+            <label>Fecha de Publicación Actual:</label>
+            <p>{{ form.instance.fecha_publicacion|date:'Y-m-d' }}</p>
+        </div>
+        {% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a href="{% url 'post_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

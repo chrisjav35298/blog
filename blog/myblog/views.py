@@ -10,22 +10,53 @@ from .forms import CategoriaForm
 from django.http import HttpResponseForbidden
 from .forms import ComentarioForm 
 from django.contrib import messages
+from datetime import datetime
+from usuario.models import Usuario  
+
 
 
 
 def es_admin(user):
     return user.is_superuser
 
+# def index(request):
+#     ultimosPosts = Post.objects.filter(fecha_publicacion__isnull=False).order_by('-fecha_publicacion')[:4]
+#     categorias_con_post = Categoria.obtener_categorias_ordenadas_por_numero_de_posts()
+#     return render(request, 'index.html', {
+#         'ultimosPosts': ultimosPosts,
+#         'postPorCategoria': categorias_con_post})
+
 def index(request):
-    ultimosPosts = Post.objects.all().order_by('fecha_publicacion').reverse()[:4]
+    categoria_id = request.GET.get('categoria')
+    autor_id = request.GET.get('autor')
+    fecha_desde = request.GET.get('fecha_desde')
+    fecha_hasta = request.GET.get('fecha_hasta')
+    categorias = Categoria.objects.all()
+    autores = Usuario.objects.all()  
+
+    ultimosPosts = Post.objects.filter(fecha_publicacion__isnull=False)
+
+    if categoria_id:
+        ultimosPosts = ultimosPosts.filter(categorias__id=categoria_id)
+
+    if autor_id:
+        ultimosPosts = ultimosPosts.filter(autor__id=autor_id)
+
+    if fecha_desde:
+        ultimosPosts = ultimosPosts.filter(fecha_publicacion__gte=datetime.strptime(fecha_desde, '%Y-%m-%d'))
+
+    if fecha_hasta:
+        ultimosPosts = ultimosPosts.filter(fecha_publicacion__lte=datetime.strptime(fecha_hasta, '%Y-%m-%d'))
+
     categorias_con_post = Categoria.obtener_categorias_ordenadas_por_numero_de_posts()
+
     return render(request, 'index.html', {
         'ultimosPosts': ultimosPosts,
-        'postPorCategoria': categorias_con_post})
+        'categorias': categorias,
+        'autores': autores,
+        'postPorCategoria': categorias_con_post
+    })
 
-def lista_posts(request):
-    posts = Post.objects.all().order_by('fecha_publicacion')
-    return render(request, 'posts.html',{'posts':posts})
 
 
 
@@ -130,3 +161,60 @@ def almacenar_comentario(request, post_id):
         
     }
     return render(request, 'comentario_form.html', context)
+
+
+# relacionado a crud del Postfrom django.shortcuts import render, redirect
+from .forms import PostForm
+
+def crear_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.autor = request.user 
+            post.save()
+            form.save_m2m()  
+            return redirect('post_list')  
+    else:
+        form = PostForm()
+    return render(request, 'post_new.html', {'form': form})
+
+# def editar_post(request, id):
+#     post = get_object_or_404(Post, id=id)
+#     if request.method == 'POST':
+#         form = PostForm(request.POST, request.FILES, instance=post)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('post_list') 
+#     else:
+#         form = PostForm(instance=post)
+#     return render(request, 'post_edit.html', {'form': form})
+
+def editar_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            # Si el checkbox "publicar" está presente, establece la fecha de publicación
+            if request.POST.get('publicar'):
+                post.fecha_publicacion = timezone.now().date()  # Establece la fecha actual
+            else:
+                post.fecha_publicacion = request.POST.get('fecha_publicacion')  # Mantiene la fecha ingresada
+            form.save()
+            return redirect('post_list') 
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'post_edit.html', {'form': form})
+
+def eliminar_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('post_list')  
+    return render(request, 'post_delete.html', {'post': post})
+
+
+def lista_posts(request):
+    posts = Post.objects.order_by('-fecha_publicacion')
+    print(posts)  # Esto te permitirá ver en la consola los posts que estás obteniendo
+    return render(request, 'post_list.html', {'posts': posts})

@@ -31,7 +31,7 @@ class Categoria(models.Model):
     
     @classmethod
     def obtener_categorias_ordenadas_por_numero_de_posts(cls):
-        return cls.objects.annotate(num_posts=Count('posts')).order_by('-num_posts')
+        return cls.objects.annotate(num_posts=Count('posts')).order_by('num_posts')
     
     @classmethod
     def obtener_posts_ordenados_por_categorias(cls):

@@ -48,9 +48,13 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item d-flex align-items-center"> 
                             <span class="navbar-text me-2">Bienvenido, {{ user.username }}!</span>
-                            <span class="text-lowercase" style="color: black;">{% if user.is_superuser %}Administrador
-                                {% else %}
-                                {% endif %}
+                            <span class="text-lowercase" style="color: black;">{% if user.is_superuser %}
+                                Administrador
+                              {% elif user.is_staff %}
+                                Colaborador
+                              {% else %}
+                                Miembro
+                              {% endif %}
                             </span>
                         </li>
                         <li class="nav-item d-flex align-items-center">

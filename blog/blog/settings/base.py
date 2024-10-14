@@ -57,6 +57,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+
 ROOT_URLCONF = 'blog.urls'
 
 TEMPLATES_DIR = os.path.join(os.path.dirname(BASE_DIR), 'templates')

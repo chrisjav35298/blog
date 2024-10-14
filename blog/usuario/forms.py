@@ -64,3 +64,17 @@ class EditarUsuarioForm(forms.ModelForm):
                 raise forms.ValidationError("Las contraseñas no coinciden.")
 
         return cleaned_data
+    
+
+class EditarUsuarioStaffForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['username', 'first_name', 'last_name', 'is_staff', 'is_active']
+        labels = {
+            'is_staff': 'Colaborador',
+            'is_active': 'Activo'
+        }
+        widgets = {
+            'is_staff': forms.CheckboxInput(),
+            'is_active': forms.CheckboxInput(),
+        }

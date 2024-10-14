@@ -29,7 +29,7 @@
                         <a class="nav-link" href="{% url 'contacto' %}">About</a>
                     </li>
 
-                    {% if user.is_superuser %}
+                    {% if user.is_superuser or user.is_staff %}
                     <li class="nav-item dropdown" id="administrar">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Administrar
@@ -38,6 +38,9 @@
                                 <li><a class="dropdown-item" href="{% url 'post_list' %}">Posts</a></li>
                                 <li><a class="dropdown-item" href="{% url 'categoria_list' %}">Categoria</a></li>
                                 <li><a class="dropdown-item" href="{% url 'contacto_list' %}">Mensajes recibidos</a></li>
+                                {% if user.is_superuser%}
+                                <li><a class="dropdown-item" href="{% url 'usuario_list' %}">Usuarios</a></li>
+                                {% endif %}
                             </ul>
                         </li>
                     {% else %}

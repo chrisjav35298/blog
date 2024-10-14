@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<h2>Lista de usuarios </h2>
+
+<form method="post" action="{% url 'usuario_update' %}">
+    {% csrf_token %}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Administrador</th>
+                <th>Colaborador</th>
+                <th>Activo</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.first_name }}</td>
+                <td>{{ usuario.last_name }}</td>
+                <td>{{ usuario.is_superuser|yesno:"Sí,No" }}</td>
+                <td>
+                    <input type="checkbox" name="is_staff_{{ usuario.id }}" 
+                           {% if usuario.is_staff %} checked {% endif %} />
+                </td>
+                <td>
+                    <input type="checkbox" name="is_active_{{ usuario.id }}" 
+                           {% if usuario.is_active %} checked {% endif %} />
+                </td>
+               
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No hay usuarios disponibles</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary" onclick="return confirmarGuardar()">Guardar cambios</button>
+    <br><br><a href="{% url 'index' %}" class="btn btn-warning">Volver</a>
+
+</form>
+
+
+
+{% endblock %}

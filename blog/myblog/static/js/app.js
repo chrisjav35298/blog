@@ -6,3 +6,7 @@ if (tipoUsuario && menuAdministrar) {
         menuAdministrar.style.display = 'none'; 
     }
 }
+
+function confirmarGuardar() {
+    return confirm('¿Estás seguro de que deseas guardar los cambios?');
+}

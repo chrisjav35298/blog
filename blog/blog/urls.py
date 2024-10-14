@@ -41,6 +41,10 @@ from usuario.views import (
     LogoutUsuario,
     usuario_edit,
     usuario_show,
+    usuario_list,
+    usuario_staff_edit,
+    usuario_update
+    
 )
 
 urlpatterns = [
@@ -66,6 +70,10 @@ urlpatterns = [
     path('logout/', LogoutUsuario.as_view(), name='logout'),
     path('usuario/editar/', usuario_edit, name='usuario_edit'),
     path('usuario/perfil/', usuario_show, name='usuario_show'),
+    path('usuario/list/', usuario_list, name='usuario_list'),
+    path('usuario/editar/staff/<int:id>/', usuario_staff_edit, name='usuario_staff_edit'),
+    path('usuario/update/', usuario_update, name='usuario_update'),
+
 
     # Rutas para categorías
     path('categoria/', categoria, name='categoria_new'),

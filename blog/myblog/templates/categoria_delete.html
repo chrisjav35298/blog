@@ -7,12 +7,10 @@
 {% block content %}
 <h2>Eliminar Categoría</h2>
 
-<p>¿Estás seguro de que deseas eliminar la categoría <strong>{{ categoria.nombre }}</strong>? Esta acción no se puede deshacer.</p>
-
 <form method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a href="{% url 'categoria_list' %}" class="btn btn-secondary">Cancelar</a>
+    <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
 </form>
 {% endblock %}
 

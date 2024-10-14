@@ -31,7 +31,9 @@ from myblog.views import (
     eliminar_categoria,
     crear_post,
     editar_post,
-    eliminar_post
+    eliminar_post,
+    comentario_delete,
+    comentario_edit
 )
 
 from contacto import views as contacto_views
@@ -51,7 +53,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     # Rutas para publicaciones y crud post
-    
     path('', index, name='index'),
     path('detalle/<int:id>/', post_detalle, name='post_detalle'),
     path('post/', crear_post, name='post_new'),
@@ -80,6 +81,11 @@ urlpatterns = [
     path('categorias/', lista_categorias, name='categoria_list'),
     path('categoria/editar/<int:id>/', editar_categoria, name='categoria_edit'),
     path('categoria/eliminar/<int:id>/', eliminar_categoria, name='categoria_delete'),
+
+    # Rutas para comentarios
+    path('comentario/editar/<int:id>/', comentario_edit, name='comentario_edit'),
+    path('comentario/eliminar/<int:id>/', comentario_delete, name='comentario_delete'),
+
 ]
 
 # Configuración para manejar archivos multimedia en modo DEBUG

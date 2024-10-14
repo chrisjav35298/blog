@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Eliminar comentario</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Eliminar</button>
+    <a href="{% url 'post_detalle' comentario.post.id %}">Cancelar</a>
+</form>
+
+
+
+
+
+
+

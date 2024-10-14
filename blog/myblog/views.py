@@ -12,6 +12,8 @@ from .forms import ComentarioForm
 from django.contrib import messages
 from datetime import datetime
 from usuario.models import Usuario  
+from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -147,13 +149,12 @@ def almacenar_comentario(request, post_id):
         form = ComentarioForm(request.POST)
         if form.is_valid():
             comentario = form.save(commit=False)
-            comentario.post = post  # Asigna el post al comentario
-            comentario.autor_comentario = request.user  # Asigna el usuario actual
-            comentario.save()  # Guarda el comentario
-            messages.success(request, 'Tu comentario ha sido enviado con éxito.')
+            comentario.post = post 
+            comentario.autor_comentario = request.user  
+            comentario.save()  
             return redirect('post_detalle', id=post.id)
     else:
-        form = ComentarioForm()  # Crea un formulario vacío para GET
+        form = ComentarioForm() 
 
     context = {
         'form': form,
@@ -218,3 +219,49 @@ def lista_posts(request):
     posts = Post.objects.order_by('-fecha_publicacion')
     print(posts)  # Esto te permitirá ver en la consola los posts que estás obteniendo
     return render(request, 'post_list.html', {'posts': posts})
+
+
+
+
+
+
+@login_required
+def comentario_edit(request, id):
+    comentario = get_object_or_404(Comentario, id=id)
+
+    if request.user != comentario.autor_comentario:
+        return redirect('post_detalle', id=comentario.post.id)  # Redirigir si no es el autor
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST, instance=comentario)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detalle', id=comentario.post.id)
+    else:
+        form = ComentarioForm(instance=comentario)
+
+    context = {
+        'form': form,
+        'comentario': comentario,
+    }
+    return render(request, 'comentario_edit.html', context)
+
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def comentario_delete(request, id):
+    comentario = get_object_or_404(Comentario, id=id)
+
+    if request.user != comentario.autor_comentario:
+        return redirect('post_detalle', id=comentario.post.id)  
+
+    if request.method == 'POST':
+        comentario.delete()
+        return redirect('post_detalle', id=comentario.post.id)
+
+    context = {
+        'comentario': comentario,
+    }
+    return render(request, 'comentario_delete.html', context)
+

@@ -46,33 +46,41 @@
     {% endblock %}
     
 
-        <!-- Sidebar block -->
-        {% block sidebar %}
-        <h2>Comentarios</h2>
-        <div>
-            {% for comentario in comentarios %}
-                <div>
-                    <p><strong>{{ comentario.autor_comentario  }}</strong> dijo:</p>
-                    <blockquote>{{ comentario.cuerpo_comentario }}</blockquote>
-                    <p><small>Publicado el {{ comentario.fecha_creado |date:"d F - Y"  }}</small></p>
-                </div>
-                <hr>
-            {% empty %}
-                <p >No hay comentarios para este post.</p>
-            {% endfor %}
-        </div>
+    {% block sidebar %}
+    <h2>Comentarios</h2>
+    <div>
+        {% for comentario in comentarios %}
+            <div>
+                <p><strong>{{ comentario.autor_comentario }}</strong> dijo:</p>
+                <blockquote>{{ comentario.cuerpo_comentario }}</blockquote>
+                <p><small>Publicado el {{ comentario.fecha_creado |date:"d F - Y" }}</small></p>
 
-        {% if user.is_authenticated %}
-            <h3>Dejar un comentario:</h3>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}  <!-- Esto renderiza el formulario -->
-                <button type="submit"  class="btn btn-primary">Enviar</button>
-            </form>
-        {% else %}
-            <p>Debe <a href="{% url 'login' %}">iniciar sesión</a> para comentar.</p>
-        {% endif %}
-        {% endblock %}
+                <!-- Verificar si el usuario autenticado es el autor del comentario -->
+                {% if request.user == comentario.autor_comentario %}
+                    <a href="{% url 'comentario_edit' comentario.id %}" class="btn btn-sm btn-warning">Editar</a>
+                    <form action="{% url 'comentario_delete' comentario.id %}" method="POST" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                    </form>
+                {% endif %}
+            </div>
+            <hr>
+        {% empty %}
+            <p>No hay comentarios para este post.</p>
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated %}
+        <h3>Dejar un comentario:</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}  
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    {% else %}
+        <p>Debe <a href="{% url 'login' %}">iniciar sesión</a> para comentar.</p>
+    {% endif %}
+    {% endblock %}
     
     <script src="{% static 'js/app.js' %}"></script>
 </body>

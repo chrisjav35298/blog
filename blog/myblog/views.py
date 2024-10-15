@@ -30,7 +30,7 @@ def es_admin(user):
 
 def index(request):
     categoria_id = request.GET.get('categoria')
-    autor_id = request.GET.get('autor')
+    PostA_Z = request.GET.get('PostA_Z')
     fecha_desde = request.GET.get('fecha_desde')
     fecha_hasta = request.GET.get('fecha_hasta')
     categorias = Categoria.objects.all()
@@ -41,8 +41,10 @@ def index(request):
     if categoria_id:
         ultimosPosts = ultimosPosts.filter(categorias__id=categoria_id)
 
-    if autor_id:
-        ultimosPosts = ultimosPosts.filter(autor__id=autor_id)
+    if PostA_Z =='asc':
+        ultimosPosts = ultimosPosts.order_by('titulo')
+    if PostA_Z =='desc':
+        ultimosPosts = ultimosPosts.order_by('-titulo')
 
     if fecha_desde:
         ultimosPosts = ultimosPosts.filter(fecha_publicacion__gte=datetime.strptime(fecha_desde, '%Y-%m-%d'))
@@ -79,7 +81,7 @@ def post_detalle(request, id):
     comentarios = post.comentarios.filter(aprobado=True)
 
     if request.method == 'POST':
-        form = ComentarioForm(request.POST)  # Instanciar el formulario con los datos POST
+        form = ComentarioForm(request.POST)  
 
         if form.is_valid():  # Validar el formulario
             comentario = form.save(commit=False)  # No guardar aún
@@ -253,8 +255,8 @@ from django.contrib.auth.decorators import login_required
 def comentario_delete(request, id):
     comentario = get_object_or_404(Comentario, id=id)
 
-    if request.user != comentario.autor_comentario:
-        return redirect('post_detalle', id=comentario.post.id)  
+    #if request.user != comentario.autor_comentario or request.user.is_staff:
+       # return redirect('post_detalle', id=comentario.post.id)  
 
     if request.method == 'POST':
         comentario.delete()

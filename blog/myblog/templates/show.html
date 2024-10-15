@@ -58,6 +58,8 @@
                 <!-- Verificar si el usuario autenticado es el autor del comentario -->
                 {% if request.user == comentario.autor_comentario %}
                     <a href="{% url 'comentario_edit' comentario.id %}" class="btn btn-sm btn-warning">Editar</a>
+                {% endif %}
+                {% if request.user == comentario.autor_comentario or request.user.is_staff%}
                     <form action="{% url 'comentario_delete' comentario.id %}" method="POST" style="display: inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>

@@ -13,7 +13,7 @@ from django.contrib import messages
 from datetime import datetime
 from usuario.models import Usuario  
 from django.contrib.auth.decorators import login_required
-
+from .forms import PostForm
 
 
 
@@ -35,6 +35,7 @@ def index(request):
     fecha_hasta = request.GET.get('fecha_hasta')
     categorias = Categoria.objects.all()
     autores = Usuario.objects.all()  
+    orden = request.GET.get('orden')
 
     ultimosPosts = Post.objects.filter(fecha_publicacion__isnull=False)
 
@@ -50,13 +51,19 @@ def index(request):
     if fecha_hasta:
         ultimosPosts = ultimosPosts.filter(fecha_publicacion__lte=datetime.strptime(fecha_hasta, '%Y-%m-%d'))
 
+    if orden == 'asc':
+        ultimosPosts = ultimosPosts.order_by('titulo') 
+    elif orden == 'desc':
+        ultimosPosts = ultimosPosts.order_by('-titulo') 
+    
     categorias_con_post = Categoria.obtener_categorias_ordenadas_por_numero_de_posts()
 
     return render(request, 'index.html', {
         'ultimosPosts': ultimosPosts,
         'categorias': categorias,
         'autores': autores,
-        'postPorCategoria': categorias_con_post
+        'postPorCategoria': categorias_con_post,
+        'orden': orden
     })
 
 
@@ -164,9 +171,6 @@ def almacenar_comentario(request, post_id):
     return render(request, 'comentario_form.html', context)
 
 
-# relacionado a crud del Postfrom django.shortcuts import render, redirect
-from .forms import PostForm
-
 def crear_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -196,11 +200,11 @@ def editar_post(request, id):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
-            # Si el checkbox "publicar" está presente, establece la fecha de publicación
+          
             if request.POST.get('publicar'):
-                post.fecha_publicacion = timezone.now().date()  # Establece la fecha actual
+                post.fecha_publicacion = timezone.now().date() 
             else:
-                post.fecha_publicacion = request.POST.get('fecha_publicacion')  # Mantiene la fecha ingresada
+                post.fecha_publicacion = request.POST.get('fecha_publicacion')  
             form.save()
             return redirect('post_list') 
     else:
@@ -217,7 +221,7 @@ def eliminar_post(request, id):
 
 def lista_posts(request):
     posts = Post.objects.order_by('-fecha_publicacion')
-    print(posts)  # Esto te permitirá ver en la consola los posts que estás obteniendo
+    print(posts) 
     return render(request, 'post_list.html', {'posts': posts})
 
 
@@ -230,7 +234,7 @@ def comentario_edit(request, id):
     comentario = get_object_or_404(Comentario, id=id)
 
     if request.user != comentario.autor_comentario:
-        return redirect('post_detalle', id=comentario.post.id)  # Redirigir si no es el autor
+        return redirect('post_detalle', id=comentario.post.id)  
 
     if request.method == 'POST':
         form = ComentarioForm(request.POST, instance=comentario)

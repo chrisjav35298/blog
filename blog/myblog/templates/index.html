@@ -69,14 +69,11 @@
                         </div>
             
                         <div class="form-group">
-                            <label for="autor">Filtrar por Autor:</label>
-                            <select name="autor" id="autor" class="form-control" onchange="this.form.submit()">
-                                <option value="">Todos los autores</option>
-                                {% for autor in autores %}
-                                    <option value="{{ autor.id }}" {% if request.GET.autor == autor.id|stringformat:"s" %}selected{% endif %}>
-                                        {{ autor.username }}
-                                    </option>
-                                {% endfor %}
+                            <label for="orden">Ordenar por:</label>
+                            <select name="orden" id="orden" class="form-control" onchange="this.form.submit()">
+                                <option value="">Sin orden</option>
+                                <option value="asc" {% if request.GET.orden == 'asc' %}selected{% endif %}>Título (A-Z)</option>
+                                <option value="desc" {% if request.GET.orden == 'desc' %}selected{% endif %}>Título (Z-A)</option>
                             </select>
                         </div>
             

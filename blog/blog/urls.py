@@ -33,7 +33,12 @@ from myblog.views import (
     editar_post,
     eliminar_post,
     comentario_delete,
-    comentario_edit
+    comentario_edit,
+    cargar_categorias,
+    lista_etiquetas,
+    editar_etiqueta,
+    eliminar_etiqueta,
+    etiqueta
 )
 
 from contacto import views as contacto_views
@@ -81,12 +86,22 @@ urlpatterns = [
     path('categorias/', lista_categorias, name='categoria_list'),
     path('categoria/editar/<int:id>/', editar_categoria, name='categoria_edit'),
     path('categoria/eliminar/<int:id>/', eliminar_categoria, name='categoria_delete'),
+    path('cargar_categorias/',cargar_categorias, name='cargar_categorias'),
 
     # Rutas para comentarios
     path('comentario/editar/<int:id>/', comentario_edit, name='comentario_edit'),
     path('comentario/eliminar/<int:id>/', comentario_delete, name='comentario_delete'),
 
+    # Rutas para etiquetas
+    path('etiqueta/', etiqueta, name='etiqueta_new'),
+    path('etiquetas/', lista_etiquetas, name='etiqueta_list'),
+    path('etiqueta/editar/<int:id>/', editar_etiqueta, name='etiqueta_edit'),
+    path('etiqueta/eliminar/<int:id>/', eliminar_etiqueta, name='etiqueta_delete'),
+    #Ruta para ajax
+   
+
 ]
+
 
 # Configuración para manejar archivos multimedia en modo DEBUG
 if settings.DEBUG:

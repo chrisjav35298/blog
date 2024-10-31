@@ -14,6 +14,7 @@ class Post(models.Model):
     fecha_creacion = models.DateTimeField(default=timezone.now)  
     fecha_publicacion = models.DateField(blank=True, null=True)
     categorias = models.ManyToManyField('Categoria', related_name='posts')
+    etiquetas = models.ManyToManyField('Etiqueta', related_name='posts', blank=True) 
 
     def publicar(self):
         self.fecha_publicacion = timezone.now().date()  
@@ -51,3 +52,9 @@ class Comentario(models.Model):
 
     def __str__(self):
         return f'Comentario de {self.autor_comentario} en {self.post}'
+    
+class Etiqueta(models.Model):
+    nombre = models.CharField(max_length=100, unique=True)  
+
+    def __str__(self):
+        return self.nombre

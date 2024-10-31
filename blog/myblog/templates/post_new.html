@@ -3,32 +3,132 @@
 {% block header %}
 {% endblock %}
 
-
 {% block main %}
+<h2>Crear Post: {{ form.instance.titulo }}</h2>
 
-<section class="py-5">
-    <div class="container">
-        <h2 class="text-center">Crear post</h2>
-        <div class="row">
-            <div class="col-lg-6 mx-auto">
-                <form method="POST" enctype="multipart/form-data"class="form-horizontal">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
+<form method="post" class="form-horizontal">
+    {% csrf_token %}
+    <div class="mb-3">
+        {{ form.non_field_errors }}
+
+        <div class="form-group">
+            <label for="id_titulo">Título:</label>
+            {{ form.titulo }}
+            {{ form.titulo.errors }}
         </div>
+
+        <div class="form-group">
+            <label for="id_resumen">Resumen:</label>
+            {{ form.resumen }}
+            {{ form.resumen.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_contenido">Contenido:</label>
+            {{ form.contenido }}
+            {{ form.contenido.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_imagen">Imagen:</label>
+            {{ form.imagen }}
+            {{ form.imagen.errors }}
+        </div>
+
+
+        <div id="categoria-container" class="form-group mb-3">
+            <label for="id_categorias">Categorías:</label>
+            <select name="categorias" id="id_categorias">
+                {% for categoria in form.categorias.field.queryset %}
+                    <option value="{{ categoria.id }}" {% if categoria.id in form.categorias.value %}selected{% endif %}>
+                        {{ categoria.nombre }} ({{ categoria.num_posts }})
+                    </option>
+                {% endfor %}
+            </select>
+            {{ form.categorias.errors }}
+        </div>
+
+        <div id="etiqueta-container" class="form-group mb-3">
+            <label for="id_categorias">Etiquetas:</label>
+            <select name="etiquetas" id="id_etiquetas">
+                {% for etiqueta in form.etiquetas.field.queryset %}
+                    <option value="{{ etiqueta.id }}" {% if categoria.id in form.categorias.value %}selected{% endif %}>
+                        {{ etiqueta.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+            {{ form.etiqueta.errors }}
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" name="publicar" id="id_publicar" value="true"> Publicar ahora
+            </label>
+        </div>
+
+        {% if form.instance.fecha_publicacion %}
+        <div class="form-group">
+            <label>Fecha de Publicación Actual:</label>
+            <p>{{ form.instance.fecha_publicacion|date:'Y-m-d' }}</p>
+        </div>
+        {% endif %}
     </div>
-</section>
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a href="{% url 'post_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
 {% endblock %}
 
+{% block javascript %}
+
+<script>
+
+async function cargarCategorias() {
+
+    try {
+        // Realiza una solicitud HTTP para obtener las categorías desde el endpoint '/cargar_categorias/'
+        const response = await fetch('/cargar_categorias/');
+        console.log(response);
+        // Verifica si la respuesta fue exitosa (código de estado 200-299)
+        if (!response.ok) {
+            throw new Error("Error en la respuesta"); // Si no es exitosa, lanza un error
+        }
+        
+        // Convierte la respuesta JSON en un objeto JavaScript
+        const data = await response.json();
+        console.log(data);
+        
+        // Selecciona el elemento <select> dentro del contenedor con ID 'categoria-container'
+        const select = document.querySelector('#categoria-container select');
+        
+        // Limpia las opciones actuales en el <select> para evitar duplicados
+        select.innerHTML = '';  
+
+        // Itera sobre cada categoría en los datos recibidos
+        data.forEach(categoria => {
+            // Crea un nuevo elemento <option> para cada categoría
+            const option = document.createElement('option');
+            option.value = categoria.id; // Establece el valor del option como el ID de la categoría
+            option.textContent = `${categoria.nombre} (${categoria.num_posts})`; // Establece el texto visible del option
+            
+            // Agrega el nuevo <option> al <select>
+            select.appendChild(option);
+        });
+    } catch (error) {
+        // Si hay un error en la solicitud o en el procesamiento, lo imprime en la consola
+        console.error('Error al cargar categorías:', error);
+    }
+}
+
+setInterval(cargarCategorias, 10000);  // Llama a la función cada 30 segundos
+cargarCategorias();
 
 
 
+</script>
 
 
 
-
+{% endblock %}
 
 
 

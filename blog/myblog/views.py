@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import Post
 from .models import Comentario
 from .models import Categoria
+from .models import Etiqueta
 from django.utils import timezone
 from django.http import Http404
 from django.urls import reverse_lazy
@@ -14,6 +15,11 @@ from datetime import datetime
 from usuario.models import Usuario  
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm
+from .forms import EtiquetaForm
+
+#ajax
+from django.db.models import Count
+from django.http import JsonResponse
 
 
 
@@ -150,6 +156,11 @@ def eliminar_categoria(request, id):
     
     return render(request, 'categoria_delete.html', {'categoria': categoria})
 
+def cargar_categorias(request):
+    categorias = Categoria.obtener_categorias_ordenadas_por_numero_de_posts()
+    data = [{'id': categoria.id, 'nombre': categoria.nombre, 'num_posts': categoria.num_posts} for categoria in categorias]
+    return JsonResponse(data, safe=False)  
+
 
 def almacenar_comentario(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -220,16 +231,10 @@ def eliminar_post(request, id):
         return redirect('post_list')  
     return render(request, 'post_delete.html', {'post': post})
 
-
 def lista_posts(request):
     posts = Post.objects.order_by('-fecha_publicacion')
     print(posts) 
     return render(request, 'post_list.html', {'posts': posts})
-
-
-
-
-
 
 @login_required
 def comentario_edit(request, id):
@@ -270,4 +275,52 @@ def comentario_delete(request, id):
         'comentario': comentario,
     }
     return render(request, 'comentario_delete.html', context)
+
+
+
+
+
+def etiqueta(request):
+    if request.method == 'POST':
+        form = EtiquetaForm(request.POST)
+        if form.is_valid():
+            form.save()  
+            return redirect('etiqueta_list')  
+    else:
+        form = EtiquetaForm()
+
+    return render(request, 'etiqueta_new.html', {'form': form})
+
+def lista_etiquetas(request):
+    etiquetas = Etiqueta.objects.all()  
+    return render(request, 'etiqueta_list.html', {'etiquetas': etiquetas})
+
+def editar_etiqueta(request, id):
+    if not request.user.is_superuser:  
+        return HttpResponseForbidden("No tienes permiso para realizar esta acción.")
+    etiqueta = get_object_or_404(Etiqueta, id=id)
+    if request.method == 'POST':
+        form = EtiquetaForm(request.POST, instance=etiqueta)
+        if form.is_valid():
+            form.save()
+            return redirect('etiqueta_list')
+    else:
+        form = EtiquetaForm(instance=etiqueta)
+    
+    return render(request, 'etiqueta_edit.html', {'form': form})
+
+
+def eliminar_etiqueta(request, id):
+    if not request.user.is_superuser: 
+        return HttpResponseForbidden("No tienes permiso para realizar esta acción.")
+    etiqueta = get_object_or_404(Etiqueta, id=id)
+    if request.method == 'POST':
+        etiqueta.delete()
+        return redirect('etiqueta_list')
+    
+    return render(request, 'etiqueta_delete.html', {'etiqueta': etiqueta})
+
+##crear el metodo para jason:....
+
+
 
